@@ -7,25 +7,23 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Fixed CORS Configuration
 app.use(cors({
-  origin: [
-    'http://localhost:3000',           // For local testing
-    'https://ai-interview-pro-server-1.onrender.com', // Your backend
-    // Add your Netlify URL here after frontend deployment
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: '*',
+  credentials: true
 }));
 
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Atlas Connected"))
-  .catch(err => console.error("MongoDB Error:", err));
+// ✅ Add this root route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: "✅ AI Interview Pro Backend is Running!",
+    status: "OK",
+    version: "1.0"
+  });
+});
 
-// Routes
+// Your existing routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/questions', require('./routes/questionRoutes'));
 
